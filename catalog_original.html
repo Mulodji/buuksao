@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookRent - Book Catalog</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 1rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 1rem;
+        }
+
+        .nav-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        /* Auth Styles */
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .auth-buttons button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .auth-buttons button:hover {
+            background-color: #2980b9;
+        }
+
+        .user-info {
+            display: none;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        /* Main Content Styles */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* Search Styles */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        #searchInput {
+            width: 50%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+        }
+
+        #searchButton {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #searchButton:hover {
+            background-color: #2980b9;
+        }
+
+        /* Book Catalog Styles */
+        .book-catalog {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .book-card {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .book-info {
+            padding: 1rem;
+        }
+
+        .book-info h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .book-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #34495e;
+            color: #ecf0f1;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #3498db;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            color: #ecf0f1;
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #3498db;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            nav {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+            }
+
+            .auth-buttons {
+                margin-top: 1rem;
+            }
+
+            #searchInput {
+                width: 70%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">BookRent</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="catalog.html">Catalog</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <button id="signInBtn">Sign In</button>
+                <button id="signUpBtn">Sign Up</button>
+            </div>
+            <div class="user-info">
+                <img id="userAvatar" src="" alt="User Avatar">
+                <span id="userName"></span>
+                <button id="signOutBtn">Sign Out</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Book Catalog</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for books...">
+            <button id="searchButton">Search</button>
+        </div>
+        <div class="book-catalog" id="bookCatalog">
+            <!-- Books will be dynamically added here using JavaScript and Firestore -->
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>BookRent is your one-stop solution for renting books online. We offer a wide selection of titles at affordable prices.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="catalog.html">Catalog</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: info@bookrent.com</p>
+                <p>Phone: (123) 456-7890</p>
+                <p>Address: 123 Book Street, Reading City, RD 12345</p>
+            </div>
+        </div>
+        <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Firebase
+     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDSntHE9r9FarvHymAtRx7pUxQgMkYftC8",
+  authDomain: "buuksao.firebaseapp.com",
+  projectId: "buuksao",
+  storageBucket: "buuksao.appspot.com",
+  messagingSenderId: "1038398911771",
+  appId: "1:1038398911771:web:8236adde6fc52f64fccfbe",
+  measurementId: "G-M1LZ7W0WN7"
+};
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // DOM Elements
+        const signInBtn = document.getElementById('signInBtn');
+        const signUpBtn = document.getElementById('signUpBtn');
+        const signOutBtn = document.getElementById('signOutBtn');
+        const userInfo = document.querySelector('.user-info');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const bookCatalog = document.getElementById('bookCatalog');
+
+        // Auth state observer
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                signInBtn.style.display = "none";
+                signUpBtn.style.display = "none";
+                userInfo.style.display = "flex";
+                userAvatar.src = user.photoURL || "https://via.placeholder.com/30";
+                userName.textContent = user.displayName || user.email;
+            } else {
+                // User is signed out
+                signInBtn.style.display = "inline-block";
+                signUpBtn.style.display = "inline-block";
+                userInfo.style.display = "none";
+            }
+        });
+
+        // Sign Out
+        signOutBtn.onclick = () => {
+            auth.signOut().then(() => {
+                // Sign-out successful.
+            }).catch((error) => {
+                alert(error.message);
+            });
+        };
+
+        // Function to display books
+        function displayBooks(books) {
+            bookCatalog.innerHTML = '';
+            books.forEach((book) => {
+                const bookCard = document.createElement('div');
+                bookCard.classList.add('book-card');
+                bookCard.innerHTML = `
+                    <img src="${book.coverImage}" alt="${book.title}">
+                    <div class="book-info">
+                        <h3>${book.title}</h3>
+                        <p>By ${book.author}</p>
+                        <p>Genre: ${book.genre}</p>
+                        <p>Rental Price: $${book.rentalPrice}/week</p>
+                    </div>
+                `;
+                bookCatalog.appendChild(bookCard);
+            });
+        }
+
+        // Function to fetch all books
+        function fetchAllBooks() {
+            db.collection('books').get()
+                .then((querySnapshot) => {
+                    const books = [];
+                    querySnapshot.forEach((doc) => {
+                        books.push(doc.data());
+                    });
+                    displayBooks(books);
+                })
+                .catch((error) => {
+                    console.error("Error fetching books: ", error);
+                });
+        }
+
+        // Function to search books
+        function searchBooks(query) {
+            query = query.toLowerCase().trim();
+            db.collection('books').get()
+                .then((querySnapshot) => {
+                    const books = [];
+                    querySnapshot.forEach((doc) => {
+                        const book = doc.data();
+                        if (
+                            book.title.toLowerCase().includes(query) ||
+                            book.author.toLowerCase().includes(query)
+                        ) {
+                            books.push(book);
+                        }
+                    });
+                    displayBooks(books);
+                })
+                .catch((error) => {
+                    console.error("Error searching books: ", error);
+                });
+        }
+
+        // Event listener for search button
+        searchButton.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                searchBooks(query);
+            } else {
+                fetchAllBooks();
+            }
+        });
+
+        // Event listener for search input (search as you type)
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                searchBooks(query);
+            } else {
+                fetchAllBooks();
+            }
+        });
+
+        // Load all books when the page loads
+        window.addEventListener('load', fetchAllBooks);
+    </script>
+</body>
+</html>

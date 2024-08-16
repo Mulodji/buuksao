@@ -8,273 +8,38 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <style>
-        /* CSS Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        /* Header Styles */
-        header {
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            padding: 1rem;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-links li {
-            margin-left: 1rem;
-        }
-
-        .nav-links a {
-            color: #ecf0f1;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: #3498db;
-        }
-
-        /* Auth Styles */
-        .auth-buttons {
-            display: flex;
-            align-items: center;
-        }
-
-        .auth-buttons button {
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            padding: 0.5rem 1rem;
-            margin-left: 0.5rem;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .auth-buttons button:hover {
-            background-color: #2980b9;
-        }
-
-        .user-info {
-            display: none;
-            align-items: center;
-        }
-
-        .user-info img {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
-        }
-
-        /* Main Content Styles */
-        main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        /* Search Styles */
-        .search-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-
-        #searchInput {
-            width: 50%;
-            padding: 0.5rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px 0 0 5px;
-        }
-
-        #searchButton {
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            border-radius: 0 5px 5px 0;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #searchButton:hover {
-            background-color: #2980b9;
-        }
-
-        /* Book Catalog Styles */
-        .book-catalog {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .book-card {
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .book-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .book-card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .book-info {
-            padding: 1rem;
-        }
-
-        .book-info h3 {
-            margin-bottom: 0.5rem;
-        }
-
-        .book-info p {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Footer Styles */
-        footer {
-            background-color: #34495e;
-            color: #ecf0f1;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-section {
-            flex: 1;
-            min-width: 200px;
-            margin-bottom: 1rem;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 1rem;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-section ul li a {
-            color: #ecf0f1;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-section ul li a:hover {
-            color: #3498db;
-        }
-
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            margin-top: 1rem;
-        }
-
-        .social-icons a {
-            color: #ecf0f1;
-            font-size: 1.5rem;
-            margin: 0 0.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .social-icons a:hover {
-            color: #3498db;
-        }
-
-        /* Responsive Design */
-        @media screen and (max-width: 768px) {
-            nav {
-                flex-direction: column;
-            }
-
-            .nav-links {
-                margin-top: 1rem;
-            }
-
-            .auth-buttons {
-                margin-top: 1rem;
-            }
-
-            #searchInput {
-                width: 70%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css">
+    
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo">BookRent</div>
+            <div class="logo"><img src="BooksAO_Logo_blue_background_no_text_edited.png" alt="Logo for the project - BooksAO" width="25%" height="auto" translate="no"><span class="centered-text" font-size="1.5em">Books.ao</span>
+                <!--<a href="index.html">BookRent</a> -->
+            </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="catalog.html">Catalog</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
             <div class="auth-buttons">
                 <button id="signInBtn">Sign In</button>
                 <button id="signUpBtn">Sign Up</button>
+                <div class="user-info" style="display: none;">
+                    <img id="userAvatar" src="https://via.placeholder.com/30" alt="User Avatar">
+                    <span id="userName"></span>
+                    <button id="signOutBtn">Sign Out</button>
+                </div>
             </div>
-            <div class="user-info">
-                <img id="userAvatar" src="" alt="User Avatar">
-                <span id="userName"></span>
-                <button id="signOutBtn">Sign Out</button>
+
+            <div class="cart-widget" id="cartWidget">
+                <h3>Cart</h3>
+                <p>Total Books: <span id="cartTotalBooks">0</span></p>
+                <p>Total Sum: $<span id="cartTotalSum">0.00</span></p>
+                <button id="submitCart" disabled>Submit Rental</button>
             </div>
+
         </nav>
     </header>
 
@@ -292,36 +57,40 @@
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>About Us</h3>
-                <p>BookRent is your one-stop solution for renting books online. We offer a wide selection of titles at affordable prices.</p>
+                <h3>About BookRent</h3>
+                <p>BookRent is your go-to platform for renting books online. Discover, read, and return with ease.</p>
             </div>
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="catalog.html">Catalog</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h3>Contact Us</h3>
                 <p>Email: info@bookrent.com</p>
                 <p>Phone: (123) 456-7890</p>
-                <p>Address: 123 Book Street, Reading City, RD 12345</p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
             </div>
         </div>
-        <div class="social-icons">
-            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <div class="footer-bottom">
+            <p>&copy; 2023 BookRent. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // Initialize Firebase
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        // Initialize Firebase (unchanged)
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyDSntHE9r9FarvHymAtRx7pUxQgMkYftC8",
   authDomain: "buuksao.firebaseapp.com",
@@ -331,12 +100,11 @@ const firebaseConfig = {
   appId: "1:1038398911771:web:8236adde6fc52f64fccfbe",
   measurementId: "G-M1LZ7W0WN7"
 };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // DOM Elements
+        // DOM Elements (including new cart elements)
         const signInBtn = document.getElementById('signInBtn');
         const signUpBtn = document.getElementById('signUpBtn');
         const signOutBtn = document.getElementById('signOutBtn');
@@ -346,25 +114,28 @@ const firebaseConfig = {
         const searchInput = document.getElementById('searchInput');
         const searchButton = document.getElementById('searchButton');
         const bookCatalog = document.getElementById('bookCatalog');
+        const cartTotalBooks = document.getElementById('cartTotalBooks');
+        const cartTotalSum = document.getElementById('cartTotalSum');
 
-        // Auth state observer
+        // Cart state
+        let cart = [];
+
+        // Auth state observer (unchanged)
         auth.onAuthStateChanged((user) => {
             if (user) {
-                // User is signed in
                 signInBtn.style.display = "none";
                 signUpBtn.style.display = "none";
                 userInfo.style.display = "flex";
                 userAvatar.src = user.photoURL || "https://via.placeholder.com/30";
                 userName.textContent = user.displayName || user.email;
             } else {
-                // User is signed out
                 signInBtn.style.display = "inline-block";
                 signUpBtn.style.display = "inline-block";
                 userInfo.style.display = "none";
             }
         });
 
-        // Sign Out
+        // Sign Out (unchanged)
         signOutBtn.onclick = () => {
             auth.signOut().then(() => {
                 // Sign-out successful.
@@ -373,31 +144,126 @@ const firebaseConfig = {
             });
         };
 
-        // Function to display books
+        // Function to display books (modified to include checkbox)
         function displayBooks(books) {
             bookCatalog.innerHTML = '';
             books.forEach((book) => {
                 const bookCard = document.createElement('div');
                 bookCard.classList.add('book-card');
                 bookCard.innerHTML = `
+                    <input type="checkbox" class="book-checkbox" data-book-id="${book.id}">
                     <img src="${book.coverImage}" alt="${book.title}">
                     <div class="book-info">
                         <h3>${book.title}</h3>
                         <p>By ${book.author}</p>
+                    
                         <p>Rental Price: $${book.rentalPrice}/week</p>
+                        <button class="rent-btn">Rent</button>
                     </div>
                 `;
                 bookCatalog.appendChild(bookCard);
+
+                // Add event listener for the rent button (existing functionality)
+                const rentBtn = bookCard.querySelector('.rent-btn');
+                rentBtn.addEventListener('click', () => {
+                    // Existing rent functionality goes here
+                    console.log(`Renting book: ${book.title}`);
+                });
+
+                // Add event listener for the checkbox (new cart functionality)
+                const checkbox = bookCard.querySelector('.book-checkbox');
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked) {
+                        addToCart(book);
+                    } else {
+                        removeFromCart(book);
+                    }
+                });
             });
         }
 
-        // Function to fetch all books
+        // New cart functions
+        function addToCart(book) {
+            cart.push(book);
+            updateCart();
+        }
+
+        function removeFromCart(book) {
+            cart = cart.filter(item => item.id !== book.id);
+            updateCart();
+        }
+
+        function updateCart() {
+            const totalBooks = cart.length;
+            const totalSum = cart.reduce((sum, book) => sum + book.rentalPrice, 0);
+            
+            cartTotalBooks.textContent = totalBooks;
+            cartTotalSum.textContent = totalSum.toFixed(2);
+        }
+
+        // Add these new DOM elements
+        const submitCartBtn = document.getElementById('submitCart');
+
+        // Modify the updateCart function to enable/disable the submit button
+        function updateCart() {
+            const totalBooks = cart.length;
+            const totalSum = cart.reduce((sum, book) => sum + book.rentalPrice, 0);
+            
+            cartTotalBooks.textContent = totalBooks;
+            cartTotalSum.textContent = totalSum.toFixed(2);
+
+            // Enable the submit button only if there are books in the cart
+            submitCartBtn.disabled = totalBooks === 0;
+        }
+
+        // Add event listener for the submit button
+        submitCartBtn.addEventListener('click', submitRental);
+
+        // Function to submit the rental to Firestore
+        function submitRental() {
+            // Check if the user is signed in
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Please sign in to submit your rental.');
+                return;
+            }
+
+            // Create a new rental document in Firestore
+            db.collection('rentals').add({
+                userId: user.uid,
+                books: cart.map(book => ({
+                    bookId: book.id,
+                    title: book.title,
+                    rentalPrice: book.rentalPrice
+                })),
+                totalPrice: cart.reduce((sum, book) => sum + book.rentalPrice, 0),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then((docRef) => {
+                console.log('Rental submitted with ID: ', docRef.id);
+                alert('Your rental has been submitted successfully!');
+                // Clear the cart
+                cart = [];
+                updateCart();
+                // Uncheck all checkboxes
+                document.querySelectorAll('.book-checkbox').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            })
+            .catch((error) => {
+                console.error('Error submitting rental: ', error);
+                alert('An error occurred while submitting your rental. Please try again.');
+            });
+        }
+
+
+        // Function to fetch all books (unchanged)
         function fetchAllBooks() {
             db.collection('books').get()
                 .then((querySnapshot) => {
                     const books = [];
                     querySnapshot.forEach((doc) => {
-                        books.push(doc.data());
+                        books.push({ id: doc.id, ...doc.data() });
                     });
                     displayBooks(books);
                 })
@@ -406,9 +272,8 @@ const firebaseConfig = {
                 });
         }
 
-        // Function to search books
+        // Function to search books (unchanged)
         function searchBooks(query) {
-            /*query = query.toLowerCase();*/
             query = query.toLowerCase().trim();
             db.collection('books').get()
                 .then((querySnapshot) => {
@@ -428,8 +293,7 @@ const firebaseConfig = {
                     console.error("Error searching books: ", error);
                 });
         }
-
-        // Event listener for search button
+        // Event listener for search button (unchanged)
         searchButton.addEventListener('click', () => {
             const query = searchInput.value.trim();
             if (query) {
@@ -439,7 +303,7 @@ const firebaseConfig = {
             }
         });
 
-        // Event listener for search input (search as you type)
+        // Event listener for search input (search as you type) (unchanged)
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim();
             if (query) {
@@ -449,7 +313,7 @@ const firebaseConfig = {
             }
         });
 
-        // Load all books when the page loads
+        // Load all books when the page loads (unchanged)
         window.addEventListener('load', fetchAllBooks);
     </script>
 </body>
