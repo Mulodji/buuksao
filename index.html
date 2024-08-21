@@ -8,13 +8,19 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
     
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo"><img src="BooksAO_Logo_blue_background_no_text_edited.png" alt="Logo for the project - BooksAO" width="25%" height="auto"><span class="centered-text" font-size="1.5em" translate="no">Books.ao</span></div>
+            <div class="logo"><img src="BooksAO_Logo_blue_background_no_text_edited.png" alt="Logo for the project - BooksAO" width="25%" height="auto"><span class="centered-text" font-size="1.5em" translate="no" color="white">Books.ao</span></div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="catalog.html">Catalog</a></li>
@@ -25,14 +31,23 @@
                 <li><a href="#contact">Contact</a></li>
             </ul>
             <div class="auth-buttons">
-                <button id="signInBtn">Sign In</button>
-                <button id="signUpBtn">Sign Up</button>
+                <div>
+                    <button id="signInBtn">Sign In</button>
+                    <button id="signUpBtn">Sign Up</button>                        
+                </div>
+                <div class="user-info">
+                    <img id="userAvatar" src="" alt="User Avatar">
+                    <span id="userName"></span>
+                    <button id="signOutBtn">Sign Out</button>
+                </div> 
+                <div class="cart-widget" id="cartWidget">
+                    <h3>Cart</h3>
+                    <p>Total Books: <span id="cartTotalBooks">0</span></p>
+                    <p>Total Sum: $<span id="cartTotalSum">0.00</span></p>
+                    <button id="submitCart" disabled>Submit Rental</button>
+                </div>   
             </div>
-            <div class="user-info">
-                <img id="userAvatar" src="" alt="User Avatar">
-                <span id="userName"></span>
-                <button id="signOutBtn">Sign Out</button>
-            </div>
+            
         </nav>
     </header>
 
@@ -114,6 +129,11 @@
     </div>
 
     <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
         // Initialize Firebase
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {

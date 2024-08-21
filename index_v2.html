@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books.ao - Livros Académicos ao seu alcance</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="./style.css">
+    
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><img src="BooksAO_Logo_blue_background_no_text_edited.png" alt="Logo for the project - BooksAO" width="25%" height="auto"><span class="centered-text" font-size="1.5em" translate="no">Books.ao</span></div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="catalog.html">Catalog</a></li>
+                <li><a href="comousar_02.html">How It Works</a></li>
+                <li><a href="quantocusta.html">Pricing</a></li>
+                <li><a href="quemsomos.html">About</a></li>
+
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <div>
+                    <button id="signInBtn">Sign In</button>
+                    <button id="signUpBtn">Sign Up</button>
+                </div>
+                <div class="user-info" style="display: none;">
+                    <img id="userAvatar" src="https://via.placeholder.com/30" alt="User Avatar">
+                    <span id="userName"></span>
+                    <button id="signOutBtn">Sign Out</button>
+                </div>
+                <div class="cart-widget" id="cartWidget">
+                    <h3>Cart</h3>
+                    <p>Total Books: <span id="cartTotalBooks">0</span></p>
+                    <p>Total Sum: $<span id="cartTotalSum">0.00</span></p>
+                    <button id="submitCart" disabled>Submit Rental</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Rent Your Favorite Books Today</h1>
+                <p>Access thousands of books for a fraction of the cost</p>
+                <a href="catalog.html" class="cta-button">Browse Catalog</a>
+            </div>
+        </section>
+
+        <section id="featured-books">
+            <h2>Featured Books</h2>
+            <div class="featured-books">
+                <!-- Books will be dynamically added here using JavaScript and Firestore -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Books.ao is your one-stop solution for renting books online. We offer a wide selection of titles at affordable prices.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                <li><a href="catalog.html">Catalog</a></li>
+                <li><a href="comousar_02.html">How It Works</a></li>
+                <li><a href="quantocusta.html">Pricing</a></li>
+                <li><a href="quemsomos.html">About</a></li>
+
+                <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section" id="contact">
+                <h3>Contact Us</h3>
+                <p>WhatsApp: +244 955 518 548</p>
+                <p>Phone: 922 570 883</p>
+                <p>Address: Shopping Talatona - Av. 21 de Janeiro - Morro Bento(Luanda/Angola)</p>
+            </div>
+        </div>
+        <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+
+        <!-- Auth Modals -->
+        <div id="signInModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Sign In</h2>
+                <form id="signInForm">
+                    <input type="email" id="signInEmail" placeholder="Email" required><br>
+                    <input type="password" id="signInPassword" placeholder="Password" required><br>
+                    <button type="submit">Sign In</button>
+                </form>
+                <button id="googleSignIn">Sign In with Google</button>
+                <button id="facebookSignIn">Sign In with Facebook</button>
+                <button id="phoneSignIn">Sign In with Phone</button>
+            </div>
+        </div>
+    
+        <div id="signUpModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Sign Up</h2>
+                <form id="signUpForm">
+                    <input type="email" id="signUpEmail" placeholder="Email" required><br>
+                    <input type="password" id="signUpPassword" placeholder="Password" required><br>
+                    <button type="submit">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    
+        <script>
+            function toggleMenu() {
+                const navLinks = document.querySelector('.nav-links');
+                navLinks.classList.toggle('active');
+            }
+    
+            // Initialize Firebase
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyDSntHE9r9FarvHymAtRx7pUxQgMkYftC8",
+      authDomain: "buuksao.firebaseapp.com",
+      projectId: "buuksao",
+      storageBucket: "buuksao.appspot.com",
+      messagingSenderId: "1038398911771",
+      appId: "1:1038398911771:web:8236adde6fc52f64fccfbe",
+      measurementId: "G-M1LZ7W0WN7"
+    };
+    
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            const auth = firebase.auth();
+    
+            // DOM Elements
+            const signInBtn = document.getElementById('signInBtn');
+            const signUpBtn = document.getElementById('signUpBtn');
+            const signOutBtn = document.getElementById('signOutBtn');
+            const signInModal = document.getElementById('signInModal');
+            const signUpModal = document.getElementById('signUpModal');
+            const signInForm = document.getElementById('signInForm');
+            const signUpForm = document.getElementById('signUpForm');
+            const googleSignInBtn = document.getElementById('googleSignIn');
+            const facebookSignInBtn = document.getElementById('facebookSignIn');
+            const phoneSignInBtn = document.getElementById('phoneSignIn');
+            const userInfo = document.querySelector('.user-info');
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+    
+            // Open modals
+            signInBtn.onclick = () => signInModal.style.display = "block";
+            signUpBtn.onclick = () => signUpModal.style.display = "block";
+    
+            // Close modals
+            document.querySelectorAll('.close').forEach(closeBtn => {
+                closeBtn.onclick = function() {
+                    this.closest('.modal').style.display = "none";
+                }
+            });
+    
+            // Sign In
+            signInForm.onsubmit = (e) => {
+                e.preventDefault();
+                const email = document.getElementById('signInEmail').value;
+                const password = document.getElementById('signInPassword').value;
+                auth.signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        signInModal.style.display = "none";
+                    })
+                    .catch((error) => {
+                        alert(error.message);
+                    });
+            };
+    
+            // Sign Up
+            signUpForm.onsubmit = (e) => {
+                e.preventDefault();
+                const email = document.getElementById('signUpEmail').value;
+                const password = document.getElementById('signUpPassword').value;
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        signUpModal.style.display = "none";
+                    })
+                    .catch((error) => {
+                        alert(error.message);
+                    });
+            };
+    
+            // Google Sign In
+            googleSignInBtn.onclick = () => {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                auth.signInWithPopup(provider)
+                    .then((result) => {
+                        signInModal.style.display = "none";
+                    })
+                    .catch((error) => {
+                        alert(error.message);
+                    });
+            };
+    
+            // Facebook Sign In
+            facebookSignInBtn.onclick = () => {
+                const provider = new firebase.auth.FacebookAuthProvider();
+                auth.signInWithPopup(provider)
+                    .then((result) => {
+                        signInModal.style.display = "none";
+                    })
+                    .catch((error) => {
+                        alert(error.message);
+                    });
+            };
+    
+            // Phone Sign In
+            phoneSignInBtn.onclick = () => {
+                // Implement phone authentication logic here
+                alert("Phone authentication not implemented in this example.");
+            };
+    
+            // Sign Out
+            signOutBtn.onclick = () => {
+                auth.signOut().then(() => {
+                    // Sign-out successful.
+                }).catch((error) => {
+                    alert(error.message);
+                });
+            };
+    
+            // Auth state observer
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    // User is signed in
+                    signInBtn.style.display = "none";
+                    signUpBtn.style.display = "none";
+                    userInfo.style.display = "flex";
+                    userAvatar.src = user.photoURL || "https://via.placeholder.com/30";
+                    userName.textContent = user.displayName || user.email;
+                } else {
+                    // User is signed out
+                    signInBtn.style.display = "inline-block";
+                    signUpBtn.style.display = "inline-block";
+                    userInfo.style.display = "none";
+                }
+            });
+    
+            // Function to fetch and display featured books
+            function displayFeaturedBooks() {
+                const featuredBooksContainer = document.querySelector('.featured-books');
+    
+                db.collection('books').where('featured', '==', true).limit(4).get()
+                    .then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            const book = doc.data();
+                            const bookCard = document.createElement('div');
+                            bookCard.classList.add('book-card');
+                            bookCard.innerHTML = `
+                                <img src="${book.coverImage}" alt="${book.title}">
+                                <div class="book-info">
+                                    <h3>${book.title}</h3>
+                                    <p>By ${book.author}</p>
+                                    <p>Rental Price: $${book.rentalPrice}/week</p>
+                                </div>
+                            `;
+                            featuredBooksContainer.appendChild(bookCard);
+                        });
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching featured books: ", error);
+                    });
+            }
+    
+            // Call the function to display featured books when the page loads
+            window.addEventListener('load', displayFeaturedBooks);
+        </script>
+</body>
+</html>
