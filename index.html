@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Books.ao - Livros Académicos ao seu alcance</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -22,13 +23,13 @@
             </div>
             
             <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="catalog.html">Catalog</a></li>
-                <li><a href="comousar_02.html">How It Works</a></li>
-                <li><a href="quantocusta.html">Pricing</a></li>
-                <li><a href="quemsomos.html">About</a></li>
+                <li><a href="#home">Início</a></li>
+                <li><a href="catalog.html">Catálogo</a></li>
+                <li><a href="comousar_02.html">Como funciona ?</a></li>
+                <li><a href="quantocusta.html">Preçário</a></li>
+                <li><a href="quemsomos.html">Quem Somos ?</a></li>
 
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#contact">Contacte-nos</a></li>
             </ul>
             <div class="auth-buttons">
                 <div>
@@ -41,9 +42,9 @@
                     <button id="signOutBtn">Sign Out</button>
                 </div> 
                 <div class="cart-widget" id="cartWidget">
-                    <h3>Cart</h3>
-                    <p>Total Books: <span id="cartTotalBooks">0</span></p>
-                    <p>Total Sum: $<span id="cartTotalSum">0.00</span></p>
+                    <h3>Encomenda:</h3>
+                    <p>Quantos livros: <span id="cartTotalBooks">0</span></p>
+                    <p>Preço Total: $<span id="cartTotalSum">0.00</span></p>
                     <button id="submitCart" disabled>Submit Rental</button>
                 </div>   
             </div>
@@ -54,14 +55,14 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h1>Rent Your Favorite Books Today</h1>
-                <p>Access thousands of books for a fraction of the cost</p>
-                <a href="catalog.html" class="cta-button">Browse Catalog</a>
+                <h1>Alugue aqui os seus livros escolares</h1>
+                <p>Aceda a milhares de livros, por uma pequena fração do seu preço</p>
+                <a href="catalog.html" class="cta-button">Consulte o Catálogo</a>
             </div>
         </section>
 
         <section id="featured-books">
-            <h2>Featured Books</h2>
+            <h2>Livros em Destaques:</h2>
             <div class="featured-books">
                 <!-- Books will be dynamically added here using JavaScript and Firestore -->
             </div>
@@ -71,26 +72,26 @@
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>About Us</h3>
-                <p>Books.ao is your one-stop solution for renting books online. We offer a wide selection of titles at affordable prices.</p>
+                <h3>Quem Somos ?</h3>
+                <p>Books.ao, é a sua plataforma de referência para aluguel de livros online, em Angola. <br>Temos uma seleção exclusiva de livros recomendados pelos Professores das respectivas disciplinas, das Universidades Angolanas</p>
             </div>
             <div class="footer-section">
-                <h3>Quick Links</h3>
+                <h3>Acesso rápido - Links:</h3>
                 <ul>
-                    <li><a href="#home">Home</a></li>
-                <li><a href="catalog.html">Catalog</a></li>
-                <li><a href="comousar_02.html">How It Works</a></li>
-                <li><a href="quantocusta.html">Pricing</a></li>
-                <li><a href="quemsomos.html">About</a></li>
+                    <li><a href="#home">Início</a></li>
+                <li><a href="catalog.html">Catálogo</a></li>
+                <li><a href="comousar_02.html">Como funciona ?</a></li>
+                <li><a href="quantocusta.html">Preçário</a></li>
+                <li><a href="quemsomos.html">Quem Somos ?</a></li>
 
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#contact">Contacte-nos</a></li>
                 </ul>
             </div>
             <div class="footer-section" id="contact">
-                <h3>Contact Us</h3>
+                <h3>Contacte-nos</h3>
                 <p>WhatsApp: +244 955 518 548</p>
-                <p>Phone: 922 570 883</p>
-                <p>Address: Shopping Talatona - Av. 21 de Janeiro - Morro Bento(Luanda/Angola)</p>
+                <p>Tlm: 922 570 883</p>
+                <p>Endereço: Shopping Talatona - Av. 21 de Janeiro - Morro Bento(Luanda/Angola)</p>
             </div>
         </div>
         <div class="social-icons">
