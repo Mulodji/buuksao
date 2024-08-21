@@ -147,6 +147,7 @@
     display: none;
     flex-direction: column;
     cursor: pointer;
+    color: white;   
 }
 
 .hamburger span {
