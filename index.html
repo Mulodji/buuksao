@@ -273,9 +273,9 @@ const firebaseConfig = {
                         bookCard.innerHTML = `
                             <img src="${book.coverImage}" alt="${book.title}">
                             <div class="book-info">
-                                <h3>${book.title}</h3>
-                                <p>By ${book.author}</p>
-                                <p>Rental Price: $${book.rentalPrice}/week</p>
+                                <h3>Título: ${book.title}</h3>
+                                <p>Autor: ${book.author}</p>
+                                <p>Preço de Aluguel: $${book.rentalPrice}/week</p>
                             </div>
                         `;
                         featuredBooksContainer.appendChild(bookCard);
