@@ -1,43 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookRent - Book Catalog</title>
+    <title>Books.ao - Livros Académicos ao seu alcance</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
     
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo"><img src="BooksAO_Logo_blue_background_no_text_edited.png" alt="Logo for the project - BooksAO" width="25%" height="auto" translate="no"><span class="centered-text" font-size="1.5em">Books.ao</span>
-                <!--<a href="index.html">BookRent</a> -->
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="catalog.html">Catalog</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-            <div class="auth-buttons">
-                <button id="signInBtn">Sign In</button>
-                <button id="signUpBtn">Sign Up</button>
-                <div class="user-info" style="display: none;">
-                    <img id="userAvatar" src="https://via.placeholder.com/30" alt="User Avatar">
-                    <span id="userName"></span>
-                    <button id="signOutBtn">Sign Out</button>
-                </div>
+            <div class="logo"><img src="BooksAO_Logo_blue_background_no_text_edited.png" alt="Logo for the project - BooksAO" width="25%" height="auto"><span class="centered-text" font-size="1.5em" translate="no" color="white">Books.ao</span></div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
 
-            <div class="cart-widget" id="cartWidget">
-                <h3>Cart</h3>
-                <p>Total Books: <span id="cartTotalBooks">0</span></p>
-                <p>Total Sum: $<span id="cartTotalSum">0.00</span></p>
-                <button id="submitCart" disabled>Submit Rental</button>
+
+            <ul class="nav-links">
+                <li><a href="#home">Início</a></li>
+                <li><a href="catalog.html">Catálogo</a></li>
+                <li><a href="comousar_02.html">Como funciona ?</a></li>
+                <li><a href="quantocusta.html">Preçário</a></li>
+                <li><a href="quemsomos.html">Quem Somos ?</a></li>
+
+                <li><a href="#contact">Contacte-nos</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <div>
+                    <button id="signInBtn">Sign In</button>
+                    <button id="signUpBtn">Sign Up</button>                        
+                </div>
+                <div class="user-info">
+                    <img id="userAvatar" src="" alt="User Avatar">
+                    <span id="userName"></span>
+                    <button id="signOutBtn">Sign Out</button>
+                </div> 
+                <div class="cart-widget" id="cartWidget">
+                    <h3>Encomenda:</h3>
+                    <p>Quantos livros: <span id="cartTotalBooks">0</span></p>
+                    <p>Preço Total: <span id="cartTotalSum">0.00</span>&nbsp; Kz</p>
+                    <button id="submitCart" disabled>Enviar Encomenda !</button>
+                </div>   
             </div>
 
         </nav>
@@ -49,44 +59,53 @@
             <input type="text" id="searchInput" placeholder="Search for books...">
             <button id="searchButton">Search</button>
         </div>
-        <div class="book-catalog" id="bookCatalog">
-            <!-- Books will be dynamically added here using JavaScript and Firestore -->
-        </div>
+
+
+       
+        <section id="featured-books">
+            <h2>Livros em Destaques:</h2>
+            <div class="featured-books">
+                <!-- Books will be dynamically added here using JavaScript and Firestore -->
+            </div>
+        </section>
+
+        <!-- <div class="book-catalog" id="bookCatalog">
+             Books will be dynamically added here using JavaScript and Firestore
+        </div> -->
     </main>
 
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>About BookRent</h3>
-                <p>BookRent is your go-to platform for renting books online. Discover, read, and return with ease.</p>
+                <h3>Quem Somos ?</h3>
+                <p>Books.ao, é a sua plataforma de referência para aluguel de livros online, em Angola. <br>Temos uma seleção exclusiva de livros recomendados pelos Professores das respectivas disciplinas, das Universidades Angolanas</p>
             </div>
             <div class="footer-section">
-                <h3>Quick Links</h3>
+                <h3>Acesso rápido - Links:</h3>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="catalog.html">Catalog</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#home">Início</a></li>
+                <li><a href="catalog.html">Catálogo</a></li>
+                <li><a href="comousar_02.html">Como funciona ?</a></li>
+                <li><a href="quantocusta.html">Preçário</a></li>
+                <li><a href="quemsomos.html">Quem Somos ?</a></li>
+
+                <li><a href="#contact">Contacte-nos</a></li>
                 </ul>
             </div>
-            <div class="footer-section">
-                <h3>Contact Us</h3>
-                <p>Email: info@bookrent.com</p>
-                <p>Phone: (123) 456-7890</p>
-            </div>
-            <div class="footer-section">
-                <h3>Follow Us</h3>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
+            <div class="footer-section" id="contact">
+                <h3>Contacte-nos</h3>
+                <p>WhatsApp: +244 955 518 548</p>
+                <p>Tlm: 922 570 883</p>
+                <p>Endereço: Shopping Talatona - Av. 21 de Janeiro - Morro Bento(Luanda/Angola)</p>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2023 BookRent. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
         </div>
     </footer>
+
 
     <script>
         // Initialize Firebase (unchanged)
