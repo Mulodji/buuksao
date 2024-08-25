@@ -166,10 +166,10 @@ const firebaseConfig = {
                     <img src="${book.coverImage}" alt="${book.title}">
                     <div class="book-info">
                         <h3>${book.title}</h3>
-                        <p>By ${book.author}</p>
+                        <p>Autor: ${book.author}</p>
                     
-                        <p>Rental Price: $${book.rentalPrice}/week</p>
-                        <button class="rent-btn">Rent</button>
+                        <p>:Preço de Aluguel: ${book.rentalPrice} Kz/semana</p>
+                        <button class="rent-btn" style="display:none">Rent</button>
                     </div>
                 `;
                 bookCatalog.appendChild(bookCard);
