@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Slideshow with Buttons</title>
+    <title>Books.ao - Breve Apresentação</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
     <style>
         .slideshow-container {
             max-width: 600px;
@@ -56,22 +62,98 @@
             background-color: rgba(0,0,0,0.9);
         }
     </style>
+    
 </head>
 <body>
-    <div class="slideshow-container">
-        <div class="slide fade">
-            <img src="como_usar_pg01_edited.png" alt="Image 1">
+    <header>
+        <nav>
+            <div class="logo"><img src="BooksAO_Logo_blue_background_no_text_edited.png" alt="Logo for the project - BooksAO" width="25%" height="auto"><span class="centered-text" font-size="1.5em" translate="no" color="white">Books.ao</span></div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="catalog.html">Catálogo</a></li>
+                <li><a href="comousar_02.html">Como funciona ?</a></li>
+                <li><a href="quantocusta.html">Preçário</a></li>
+                <li><a href="quemsomos.html">Quem Somos ?</a></li>
+
+                <li><a href="#contact">Contacte-nos</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <div>
+                    <button id="signInBtn">Sign In</button>
+                    <button id="signUpBtn">Sign Up</button>                        
+                </div>
+                <div class="user-info">
+                    <img id="userAvatar" src="" alt="User Avatar">
+                    <span id="userName"></span>
+                    <button id="signOutBtn">Sign Out</button>
+                </div> 
+                <div class="cart-widget" id="cartWidget">
+                    <h3>Encomenda:</h3>
+                    <p>Quantos livros: <span id="cartTotalBooks">0</span></p>
+                    <p>Preço Total: <span id="cartTotalSum">0.00</span>&nbsp; Kz</p>
+                    <button id="submitCart" disabled>Enviar Encomenda !</button>
+                </div>   
+            </div>
+
+        </nav>
+    </header>
+
+    <main>
+        <h1>Funcionalidades & Vantagens:<h1>
+            <div class="slideshow-container">
+                <div class="slide fade">
+                    <img src="como_usar_pg01_edited.png" alt="Image 1">
+                </div>
+                <div class="slide fade">
+                    <img src="como_usar_pg02_edited.png" alt="Image 2">
+                </div>
+                <div class="slide fade">
+                    <img src="como_usar_pg03_edited.png" alt="Image 3">
+                </div>
+                
+                <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+                <a class="next" onclick="changeSlide(1)">&#10095;</a>
+            </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quem Somos ?</h3>
+                <p>Books.ao, é a sua plataforma de referência para aluguel de livros online, em Angola. <br>Temos uma seleção exclusiva de livros recomendados pelos Professores das respectivas disciplinas, das Universidades Angolanas</p>
+            </div>
+            <div class="footer-section">
+                <h3>Acesso rápido - Links:</h3>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                <li><a href="catalog.html">Catálogo</a></li>
+                <li><a href="comousar_02.html">Como funciona ?</a></li>
+                <li><a href="quantocusta.html">Preçário</a></li>
+                <li><a href="quemsomos.html">Quem Somos ?</a></li>
+
+                <li><a href="#contact">Contacte-nos</a></li>
+                </ul>
+            </div>
+            <div class="footer-section" id="contact">
+                <h3>Contacte-nos</h3>
+                <p>WhatsApp: +244 955 518 548</p>
+                <p>Tlm: 922 570 883</p>
+                <p>Endereço: Shopping Talatona - Av. 21 de Janeiro - Morro Bento(Luanda/Angola)</p>
+            </div>
         </div>
-        <div class="slide fade">
-            <img src="como_usar_pg02_edited.png" alt="Image 2">
+        <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
         </div>
-        <div class="slide fade">
-            <img src="como_usar_pg03_edited.png" alt="Image 3">
-        </div>
-        
-        <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
-        <a class="next" onclick="changeSlide(1)">&#10095;</a>
-    </div>
+    </footer>
 
     <script>
         let slideIndex = 1;
@@ -97,6 +179,240 @@
             
             slides[slideIndex - 1].style.display = "block";
         }
+    </script>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Initialize Firebase (unchanged)
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDSntHE9r9FarvHymAtRx7pUxQgMkYftC8",
+  authDomain: "buuksao.firebaseapp.com",
+  projectId: "buuksao",
+  storageBucket: "buuksao.appspot.com",
+  messagingSenderId: "1038398911771",
+  appId: "1:1038398911771:web:8236adde6fc52f64fccfbe",
+  measurementId: "G-M1LZ7W0WN7"
+};
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // DOM Elements (including new cart elements)
+        const signInBtn = document.getElementById('signInBtn');
+        const signUpBtn = document.getElementById('signUpBtn');
+        const signOutBtn = document.getElementById('signOutBtn');
+        const userInfo = document.querySelector('.user-info');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const bookCatalog = document.getElementById('bookCatalog');
+        const cartTotalBooks = document.getElementById('cartTotalBooks');
+        const cartTotalSum = document.getElementById('cartTotalSum');
+
+        // Cart state
+        let cart = [];
+
+        // Auth state observer (unchanged)
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                signInBtn.style.display = "none";
+                signUpBtn.style.display = "none";
+                userInfo.style.display = "flex";
+                userAvatar.src = user.photoURL || "https://via.placeholder.com/30";
+                userName.textContent = user.displayName || user.email;
+            } else {
+                signInBtn.style.display = "inline-block";
+                signUpBtn.style.display = "inline-block";
+                userInfo.style.display = "none";
+            }
+        });
+
+        // Sign Out (unchanged)
+        signOutBtn.onclick = () => {
+            auth.signOut().then(() => {
+                // Sign-out successful.
+            }).catch((error) => {
+                alert(error.message);
+            });
+        };
+
+        // Function to display books (modified to include checkbox)
+        function displayBooks(books) {
+            bookCatalog.innerHTML = '';
+            books.forEach((book) => {
+                const bookCard = document.createElement('div');
+                bookCard.classList.add('book-card');
+                bookCard.innerHTML = `
+                    <input type="checkbox" class="book-checkbox" data-book-id="${book.id}">
+                    <img src="${book.coverImage}" alt="${book.title}">
+                    <div class="book-info">
+                        <h3>${book.title}</h3>
+                        <p>Autor: ${book.author}</p>
+                    
+                        <p>:Preço de Aluguel: ${book.rentalPrice} Kz/semana</p>
+                        <button class="rent-btn" style="display:none">Rent</button>
+                    </div>
+                `;
+                bookCatalog.appendChild(bookCard);
+
+                // Add event listener for the rent button (existing functionality)
+                const rentBtn = bookCard.querySelector('.rent-btn');
+                rentBtn.addEventListener('click', () => {
+                    // Existing rent functionality goes here
+                    console.log(`Renting book: ${book.title}`);
+                });
+
+                // Add event listener for the checkbox (new cart functionality)
+                const checkbox = bookCard.querySelector('.book-checkbox');
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked) {
+                        addToCart(book);
+                    } else {
+                        removeFromCart(book);
+                    }
+                });
+            });
+        }
+
+        // New cart functions
+        function addToCart(book) {
+            cart.push(book);
+            updateCart();
+        }
+
+        function removeFromCart(book) {
+            cart = cart.filter(item => item.id !== book.id);
+            updateCart();
+        }
+
+        function updateCart() {
+            const totalBooks = cart.length;
+            const totalSum = cart.reduce((sum, book) => sum + book.rentalPrice, 0);
+            
+            cartTotalBooks.textContent = totalBooks;
+            cartTotalSum.textContent = totalSum.toFixed(2);
+        }
+
+        // Add these new DOM elements
+        const submitCartBtn = document.getElementById('submitCart');
+
+        // Modify the updateCart function to enable/disable the submit button
+        function updateCart() {
+            const totalBooks = cart.length;
+            const totalSum = cart.reduce((sum, book) => sum + book.rentalPrice, 0);
+            
+            cartTotalBooks.textContent = totalBooks;
+            cartTotalSum.textContent = totalSum.toFixed(2);
+
+            // Enable the submit button only if there are books in the cart
+            submitCartBtn.disabled = totalBooks === 0;
+        }
+
+        // Add event listener for the submit button
+        submitCartBtn.addEventListener('click', submitRental);
+
+        // Function to submit the rental to Firestore
+        function submitRental() {
+            // Check if the user is signed in
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Please sign in to submit your rental.');
+                return;
+            }
+
+            // Create a new rental document in Firestore
+            db.collection('rentals').add({
+                userId: user.uid,
+                books: cart.map(book => ({
+                    bookId: book.id,
+                    title: book.title,
+                    rentalPrice: book.rentalPrice
+                })),
+                totalPrice: cart.reduce((sum, book) => sum + book.rentalPrice, 0),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then((docRef) => {
+                console.log('Rental submitted with ID: ', docRef.id);
+                alert('Your rental has been submitted successfully!');
+                // Clear the cart
+                cart = [];
+                updateCart();
+                // Uncheck all checkboxes
+                document.querySelectorAll('.book-checkbox').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            })
+            .catch((error) => {
+                console.error('Error submitting rental: ', error);
+                alert('An error occurred while submitting your rental. Please try again.');
+            });
+        }
+
+
+        // Function to fetch all books (unchanged)
+        function fetchAllBooks() {
+            db.collection('books').get()
+                .then((querySnapshot) => {
+                    const books = [];
+                    querySnapshot.forEach((doc) => {
+                        books.push({ id: doc.id, ...doc.data() });
+                    });
+                    displayBooks(books);
+                })
+                .catch((error) => {
+                    console.error("Error fetching books: ", error);
+                });
+        }
+
+        // Function to search books (unchanged)
+        function searchBooks(query) {
+            query = query.toLowerCase().trim();
+            db.collection('books').get()
+                .then((querySnapshot) => {
+                    const books = [];
+                    querySnapshot.forEach((doc) => {
+                        const book = doc.data();
+                        if (
+                            book.title.toLowerCase().includes(query) ||
+                            book.author.toLowerCase().includes(query)
+                        ) {
+                            books.push(book);
+                        }
+                    });
+                    displayBooks(books);
+                })
+                .catch((error) => {
+                    console.error("Error searching books: ", error);
+                });
+        }
+        // Event listener for search button (unchanged)
+        searchButton.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                searchBooks(query);
+            } else {
+                fetchAllBooks();
+            }
+        });
+
+        // Event listener for search input (search as you type) (unchanged)
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                searchBooks(query);
+            } else {
+                fetchAllBooks();
+            }
+        });
+
+        // Load all books when the page loads (unchanged)
+        window.addEventListener('load', fetchAllBooks);
     </script>
 </body>
 </html>
