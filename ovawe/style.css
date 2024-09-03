@@ -15,9 +15,12 @@ body {
 header {
     background-color: #ea5d03; /* Orange for header */
     padding: 20px 0;
+    color: white;
 }
 
 .logo {
+    height: auto;
+    max-width: 100%;
     float: left;
     margin-right: 20px;
 }
@@ -27,11 +30,19 @@ nav ul {
     margin: 0;
     padding: 0;
     float: left;
+    color: white;
 }
 
 nav ul li {
     display: inline-block;
     margin-right: 20px;
+    color: white;
+}
+
+.nav-links a {
+    color: #ecf0f1;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 .cta {
