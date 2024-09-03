@@ -47,7 +47,8 @@ nav ul li {
 /* Add more styles for other sections and elements as needed */
 /* Footer Styles */
 footer {
-    background-color: #326edc;
+    background-color: #ea5d03; /* Orange for footer */
+
     color: #ecf0f1;
     padding: 2rem;
     text-align: center;
